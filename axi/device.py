@@ -18,11 +18,11 @@ STEP_DIVIDER = 2 ** (MICROSTEPPING_MODE - 1)
 STEPS_PER_INCH = 2032 / STEP_DIVIDER
 STEPS_PER_MM = 80 / STEP_DIVIDER
 
-PEN_UP_POSITION = 60
+PEN_UP_POSITION = 65
 PEN_UP_SPEED = 150
 PEN_UP_DELAY = 0
 
-PEN_DOWN_POSITION = 40
+PEN_DOWN_POSITION = 20
 PEN_DOWN_SPEED = 150
 PEN_DOWN_DELAY = 0
 
@@ -133,12 +133,16 @@ class Device(object):
 
     def read_position(self):
         response = self.command('QS')
-        self.readline()
-        a, b = map(int, response.split(','))
-        a /= self.steps_per_unit
-        b /= self.steps_per_unit
-        y = (a - b) / 2
-        x = y + b
+        if 'OK' in response:
+            position = self.readline()
+            a, b = map(int, position.split(','))
+            a /= self.steps_per_unit
+            b /= self.steps_per_unit
+            y = (a - b) / 2
+            x = y + b
+        else:
+            x = 0
+            y = 0
         return x, y
 
     def stepper_move(self, duration, a, b):
