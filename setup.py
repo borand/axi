@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='axi',
-    version='0.1',
+    version='0.1.1',
     description='Library for working with the AxiDraw v3 pen plotter.',
     author='Michael Fogleman',
     author_email='michael.fogleman@gmail.com',
